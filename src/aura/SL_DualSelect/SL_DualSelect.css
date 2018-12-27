@@ -1,0 +1,13 @@
+.THIS .mymodal .modal-header{
+    font-size: 20px !important; 
+}
+.THIS .slds-p-around_medium, .THIS .slds-p-around--medium{
+    padding: 0px !important;
+}
+.THIS .slds-dueling-list__options, .THIS .slds-picklist__options{
+    width: 25rem !important;
+    height: 480px !important;
+}
+.THIS .slds-dueling-list {
+    display: inline-flex !important;
+}

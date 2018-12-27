@@ -1,0 +1,154 @@
+<aura:component>
+
+    <aura:handler name="init" value="{!this}" action="{!c.initializeList}" access="private" />
+    <aura:handler name="change" value="{!v.values}" action="{!c.initializeList}" access="private" />
+    <aura:handler event="c:ApplicationEvent" action="{!c.handleDataChangeAppEvent}" />
+    <aura:handler name="dropEvent" event="c:justEvent" action="{! c.afterDrop }" />
+
+    <aura:registerEvent name="dropEvent" type="c:justEvent" />
+    <aura:registerEvent name="generalCommunication" type="c:ApplicationEvent" />
+    <aura:registerEvent name="multiColumnSelectChange" type="c:ComponentEvent" />
+
+    <aura:attribute name="elementForDelete" type="Object[]" access="private" />
+    <aura:attribute name="items" type="Object[]" description="items in this list" />
+    <aura:attribute name="rightItems" type="Object[]" description="items in this list" />
+    <aura:attribute name="highlightedItem" type="Object" description="an item ready to be transferred to the selectedValues array"
+        access="private" />
+    <aura:attribute name="highlightedItems" type="Object[]" description="a set of items ready to be transferred to the selectedValues array"
+        access="private" />
+    <aura:attribute name="changeEventScheduled" type="Boolean" description="set when we are scheduled to send an event"
+        access="private" />
+    <aura:attribute name="position" type="String" description="left or right" access="public" />
+    <aura:attribute name="storedTimer" type="Object" description="storing a timer allows it to be cancelled" access="private" />
+    <aura:attribute name="uuId" type="String" access="private" />
+    <aura:attribute name="IdNumber" type="String" access="private" />
+    <aura:attribute name="dragId" type="Integer" />
+    <aura:attribute name="side" type="String" />
+    <aura:attribute name="showCollapse" type="Boolean" description="Display collapse ctrl button" access="public"
+        default="true" />
+    <aura:attribute name="fieldName" type="String" access="public" />
+    <aura:attribute name="showCounter" type="Boolean" description="Display counter items" access="public" default="true" />
+    <aura:attribute name="showSearchFld" type="Boolean" description="Display search field" access="public" default="true" />
+    <aura:attribute name="placeHolderSearchTxt" type="String" description="Display placeholder in search field" access="public"
+        default="Search text" />
+
+    <ltng:require styles="{!$Resource.dragula + '/dragula.min.css'}" scripts="{!$Resource.dragula + '/dragula.min.js'}"
+        afterScriptsLoaded="{!c.afterScriptLoaded}" />
+
+    <span class="slds-form-element__label">
+        <div style="width:50%;display:inline-block;padding-left:5px;height:28px;" align="left">
+            <aura:unescapedHtml value="{!v.fieldName}" />
+        </div>
+        <div style="width:50%;display:inline-block;height:28px;" align="right">
+            <aura:if isTrue="{!v.showCollapse}">
+                <div class="slds-form-element" style="margin-left:7rem;">
+                    <label class="slds-checkbox_toggle slds-grid">
+                        <span class="slds-form-element__label slds-m-bottom_none">Show&nbsp;description</span>
+                        <input id="chToggle" checked="true" type="checkbox" value="showDesc" onchange="{!c.handleShowDesc}" />
+                        <span id="checkbox-toggle-2" class="slds-checkbox_faux_container" aria-live="assertive">
+                            <span class="slds-checkbox_faux"></span>
+                        </span>
+                    </label>
+                </div>
+            </aura:if>
+
+        </div>
+    </span>
+    <div class="slds-grid">
+        <div class="slds-col" style="    width: 11rem;">
+            <aura:if isTrue="{!v.showSearchFld}">
+                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"
+                    style="height:34px;width: 25rem;">
+                    <input id="searchFld" class="slds-input slds-combobox__input" autocomplete="off" role="textbox"
+                        type="text" onfocus="{! c.turnOffAutocomplete }" placeholder="{!v.placeHolderSearchTxt}" value=""
+                        onkeyup="{! c.onSearchInputChange }" />
+                    <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                        <lightning:icon iconName="utility:search" size="x-small" alternativeText="Search" />
+                    </span>
+                </div>
+            </aura:if>
+        </div>
+        <div class="slds-col">
+            <aura:if isTrue="{!v.showCounter}">
+                <div style="color:#dbdbda;padding-bottom:6px;padding-top:4px">{!v.rightItems.length} Selected</div>
+
+            </aura:if>
+        </div>
+    </div>
+
+    <div class="slds-grid">
+        <div class="slds-dueling-list__options">
+            <div class="slds-col slds-listbox_vertical">
+                <div id='listleft' aura:id="spec" aria-multiselectable="true">
+                    <aura:if isTrue="{!v.items.length == 0}">
+                        <div aura:id="startSize" id="startSize" data-index="divId" class="startSize">
+                        </div>
+                    </aura:if>
+                    <aura:iteration items="{!v.items}" var="item">
+                        <div data-index="{!item.id}" id="{!item.id}" draggable="true" onclick="{!c.handleListClick}"
+                            class="{! ' slds-listbox__item ' + item.style}">
+                            <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline"
+                                role="option" aria-selected="{!item.selected}">
+                                <span class="slds-media__body"><span id="{!item.id}">
+                                        <aura:unescapedHtml value="{!item.value}" /></span></span>
+                            </div>
+                        </div>
+                    </aura:iteration>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="slds-dueling-list__column" style="padding-top:60px">
+            <button class="slds-button slds-button_icon-container slds-button_icon-small" title="Move Selection to Selected Items"
+                onclick="{!c.moveLeftToRight}">
+                <lightning:icon iconName="utility:right" size="x-small" class="slds-button__icon slds-button__icon_large" />
+                <span class="slds-assistive-text">Move Selection to Selected Items</span>
+            </button>
+            <button class="slds-button slds-button_icon-container slds-button_icon-small" title="Move Selection to Unselected Items"
+                onclick="{!c.moveRightToLeft}">
+                <lightning:icon iconName="utility:left" size="x-small" class="slds-button__icon slds-button__icon_large" />
+                <span class="slds-assistive-text">Move Selection to Unselected Items</span>
+            </button>
+        </div>
+
+        <div class="slds-dueling-list__options">
+
+            <div class="slds-col slds-listbox_vertical">
+
+                <div id='listRight' aura:id="spec2" aria-multiselectable="true">
+                    <aura:if isTrue="{!v.rightItems.length == 0}">
+                        <div aura:id="startSize" id="startSize" data-index="divId" class="startSize">
+                        </div>
+                    </aura:if>
+                    <aura:iteration items="{!v.rightItems}" var="item">
+                        <div data-index2="{!item.id}" id="{!item.id}" draggable="true" onclick="{!c.handleListClick}">
+                            <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline"
+                                role="option" aria-selected="{!item.selected}">
+                                <span class="slds-media__body"><span id="{!item.id}">
+                                        <aura:unescapedHtml value="{!item.value}" /></span></span>
+                            </div>
+                        </div>
+                    </aura:iteration>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="slds-dueling-list__column" style="padding-top:14px">
+            <button class="slds-button slds-button--icon-container slds-button--icon-small" title="Up" onclick="{!c.handleReorderItemUp}">
+                <lightning:icon iconName="utility:up" size="x-small" class="slds-button__icon slds-button__icon--large" />
+                <span class="slds-assistive-text">Move Selection Up</span>
+            </button>
+            <button class="slds-button slds-button--icon-container slds-button--icon-small" title="Down" onclick="{!c.handleReorderItemDown}">
+                <lightning:icon iconName="utility:down" size="x-small" class="slds-button__icon slds-button__icon--large" />
+                <span class="slds-assistive-text">Move Selection Down</span>
+            </button>
+        </div>
+
+    </div>
+
+
+
+</aura:component>

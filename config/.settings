@@ -1,0 +1,18 @@
+{
+    "projectName": "DragAndDrop",
+    "username": "privlad@silverlinecrm.com.blist",
+    "id": "c2267bc0-05cc-11e9-896b-7f92e75ea8d1",
+    "namespace": "",
+    "orgType": "developer",
+    "loginUrl": "https://login.salesforce.com/",
+    "instanceUrl": "https://eu16.salesforce.com",
+    "workspace": "D:\\Projects",
+    "subscription": [
+        "ApexClass",
+        "ApexComponent",
+        "ApexPage",
+        "ApexTrigger",
+        "AuraDefinitionBundle",
+        "StaticResource"
+    ]
+}

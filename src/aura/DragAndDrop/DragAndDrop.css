@@ -1,0 +1,18 @@
+.THIS div:focus {
+    outline: none;
+}
+
+.THIS li:focus {
+    outline: none;
+}
+
+.THIS .mainListNoShDesc span.value_shot_desc,
+.THIS .hideItem {
+    display: none;
+    visibility: hidden;
+}
+
+.THIS .startSize {
+    height: 380px;
+    width: 100%;
+}

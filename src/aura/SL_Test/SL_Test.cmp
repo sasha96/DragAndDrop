@@ -1,0 +1,60 @@
+<aura:component implements="force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.initializeList}" />
+  <aura:attribute name="items" type="Object[]" description="items in this list" />
+  <aura:attribute name="rightItems" type="Object[]" description="items in this list" />
+
+
+
+  <aura:attribute name="leftValues" type="Object[]" default="[
+        {
+          'label': 'Case, Access to Leading Managers #1',
+          'value': '&lt;b&gt;Case, Access to Leading Managers #1&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+        },
+        {
+          'label': 'Account, Access to Leading Managers #2',
+          'value': '&lt;b&gt;Account, Access to Leading Managers #2&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+        },
+        {
+          'label': 'Contact, Access to Leading Managers #3',
+          'value': '&lt;b&gt;Contact, Access to Leading Managers #3&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+        },
+        {
+          'label': 'Contact, Access to Leading Managers #4',
+          'value': '&lt;b&gt;Contact, Access to Leading Managers #4&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+        },
+        {
+          'label': 'Opportunity, Access to Leading Managers #5',
+          'value': '&lt;b&gt;Opportunity, Access to Leading Managers #5&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+        },
+        {
+          'label': 'Lead, Access to Leading Managers #6',
+          'value': '&lt;b&gt;Lead, Access to Leading Managers #6&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+        }
+      ]" />
+
+
+  <aura:attribute name="rightValues" type="Object[]" default="[
+    {
+      'label': 'Case, Access to Leading Managers #1',
+      'value': '&lt;b&gt;Case, Access to Leading Managers #1&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+    },
+    {
+      'label': 'Account, Access to Leading Managers #2',
+      'value': '&lt;b&gt;Account, Access to Leading Managers #2&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+    },
+    {
+      'label': 'Lead, Access to Leading Managers #6',
+      'value': '&lt;b&gt;Lead, Access to Leading Managers #6&lt;/b&gt;&lt;span class=\'value_shot_desc\'&gt;&lt;br/&gt;You\'re ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored and ready to capitalize on Adviser Investments\' access to funds that are closed to retail investored&lt;/span&gt;'
+    }
+  ]" />
+
+
+
+
+  <c:DragAndDrop items="{!v.items}" rightItems="{!v.rightItems}" />
+
+
+  <lightning:button class="slds-button slds-button_outline-brand" variant="base" label="count of elements" title="Base action"
+    onclick="{! c.printConsole }" />
+</aura:component>

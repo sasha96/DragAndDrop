@@ -1,0 +1,68 @@
+<!--
+  @Component Name     : SL_DualSelect.cmp
+  @Description        : 
+  @Author             : phUser@phDomain.com
+  @Group              : 
+  @Last Modified By   : phUser@phDomain.com
+  @Last Modified On   : 12/21/2018, 4:55:17 PM
+  @Modification Log   : 
+  ==============================================================================
+  Ver         Date                     Author      		      Modification
+  ==============================================================================
+  1.0    12/19/2018, 5:29:12 PM   phUser@phDomain.com     Initial Version
+-->
+<aura:component implements="force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global">
+
+  <aura:attribute name="leftColumnName" type="String" default="Values" />
+  <aura:attribute name="rightColumnName" type="String" default="Values" />
+  <aura:attribute name="placeHolderSearchTxt" type="String" default="Search text" />
+  <aura:attribute name="isDraggable" type="Boolean" description="Enable/Disable Draggable functionality" access="public"
+    default="false" />
+  <ltng:require styles="{!$Resource.dragula + '/dragula.min.css'}" scripts="{!$Resource.dragula + '/dragula.min.js'}"
+    afterScriptsLoaded="{!c.afterScriptLoaded}" />
+
+
+  <aura:handler name="dropEvent" event="c:justEvent" action="{! c.dropEvent }" />
+  <aura:registerEvent name="dropEvent" type="c:justEvent" />
+
+
+  <aura:attribute name="leftValues" type="Object[]" />
+
+
+  <aura:attribute name="rightValues" type="Object[]" />
+  <!--
+  <div class="slds">
+    <div class="slds-dueling-list slds-grid" align="left">
+      <div class="slds-assistive-text" id="drag-live-region" aria-live="assertive"></div>
+      <div class="slds-assistive-text" id="option-drag-label">Press space bar when on an item, to move it within the
+        list. CMD plus
+        left and right arrow keys, to move items between lists.</div>
+
+      <c:SL_OrderedList aura:id="left" fieldName="{!v.leftColumnName}" values="{!v.leftValues}" isDraggable="{!v.isDraggable}"
+        position="left" showSearchFld="true" placeHolderSearchTxt="{!v.placeHolderSearchTxt}" showCollapse="true" />
+
+      <div class="slds-dueling-list__column" style="padding-top:60px">
+        <button class="slds-button slds-button_icon-container slds-button_icon-small" title="Move Selection to Selected Items"
+          onclick="{!c.moveLeftToRight}">
+          <lightning:icon iconName="utility:right" size="x-small" class="slds-button__icon slds-button__icon_large" />
+          <span class="slds-assistive-text">Move Selection to Selected Items</span>
+        </button>
+        <button class="slds-button slds-button_icon-container slds-button_icon-small" title="Move Selection to Unselected Items"
+          onclick="{!c.moveRightToLeft}">
+          <lightning:icon iconName="utility:left" size="x-small" class="slds-button__icon slds-button__icon_large" />
+          <span class="slds-assistive-text">Move Selection to Unselected Items</span>
+        </button>
+      </div>
+
+      <c:SL_OrderedList aura:id="right" fieldName="{!v.rightColumnName}" values="{!v.rightValues}" isDraggable="{!v.isDraggable}"
+        showUpDown="true" showCounter="true" position="right" />
+
+    </div>
+  </div>
+-->
+
+
+  <c:DragAndDrop />
+
+</aura:component>
